@@ -1,0 +1,22 @@
+version: '3.8'  # Using a recent version of the Compose file format
+
+services:
+  web:
+    image: php:8.0-apache  # Official PHP image with Apache pre-installed
+    ports:
+      - "3000:80"  # Map host port 80 to the container's port 80
+    volumes:
+      - ./src:/var/www/html  # Mount your PHP source code into the container's web root
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public  # If you have a public folder for your project
+    depends_on:
+      - db  # Make sure the web container starts after the database is ready
+
+  db:
+    image: mysql:8.0  # Official MySQL image
+    restart: always  # Restart the container automatically if it stops
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password  # Replace with a strong password
+      MYSQL_DATABASE: your_database_name  # Replace with the desired database name
+      MYSQL_USER: your_user  # Replace with the desired database user
+      MYSQL_PASSWORD: your_password  # Replace with the desired user's password
